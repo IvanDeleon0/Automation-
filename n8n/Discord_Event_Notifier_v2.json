@@ -1,0 +1,866 @@
+{
+  "name": "Discord Event Notifier v2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Polar Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1978881651,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1978881651"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        128
+      ],
+      "id": "d6f8f125-1d23-4ae3-93f7-44d2801fa699",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_TRIGGER_CREDENTIAL_ID",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "dc1bbaa2-dc6c-491f-b5d6-c24d7b4015d3",
+              "leftValue": "={{ $json['Event ID'] }}",
+              "rightValue": "Scheduled",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -192,
+        128
+      ],
+      "id": "5a8b191a-ec5e-40f3-8c05-2825aba03642",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ae8b49a-022f-4234-9bed-9f7bbe4ce228",
+              "name": "Event ID",
+              "value": "=EVT- {{ $now.format(\"MM-HHmmss\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ccb7b336-cd02-4431-88bb-5e3643caff3e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Polar Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1978881651,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1978881651"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $json.Timestamp }}",
+            "Event ID": "={{ $json['Event ID'] }}",
+            "startDateTime": "={{ $json.startDateTime }}",
+            "endDateTime": "={{ $json.endDateTime }}",
+            "startTime": "={{ $json.startTime }}",
+            "endTime": "={{ $json.endTime }}",
+            "date": "={{ $json.date }}",
+            " Event Name": "={{ $json[' Event Name'] }}"
+          },
+          "matchingColumns": [
+            " Event Name"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Event Name",
+              "displayName": " Event Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created By",
+              "displayName": "Created By",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Event Time",
+              "displayName": "Event Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Venue",
+              "displayName": "Venue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Speaker",
+              "displayName": "Speaker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Event Description",
+              "displayName": "Event Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Registration Link",
+              "displayName": "Registration Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Event ID",
+              "displayName": "Event ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Gmail Sent",
+              "displayName": "Gmail Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "change_type",
+              "displayName": "change_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "startTime",
+              "displayName": "startTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "endTime",
+              "displayName": "endTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "startDateTime",
+              "displayName": "startDateTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "endDateTime",
+              "displayName": "endDateTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        0
+      ],
+      "id": "915935cb-94f5-448b-82f3-f29013bfef51",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('If').item.json.Status }}",
+                    "rightValue": "Scheduled",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8d365497-894f-46c0-a010-1a215bd233d1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Scheduled Event"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2f2c0458-b027-41cb-9c22-b6679af6ccbc",
+                    "leftValue": "={{ $('If').item.json.Status }}",
+                    "rightValue": "Draft",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Drafted Event"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "da34f6c4-32a3-4418-9219-ee9c9340bc0b",
+                    "leftValue": "={{ $('If').item.json.Status }}",
+                    "rightValue": "Cancelled",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cancelled Events"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        352
+      ],
+      "id": "48f87d51-cbb2-4878-9a7c-6e9ec25bddc8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=# ❌ AWS LEARNING CLUB POLAR\n## ⚠️ EVENT CANCELLATION NOTICE\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n# 📢 {{ $('If').item.json[' Event Name'] }}\n\nHello @everyone,\n\nWe regret to inform you that the following event has been **cancelled**.\n\n```ansi\n\u001b[1;31m🔴 STATUS: CANCELLED\u001b[0m\n```\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 Originally Scheduled\n> {{ $('If').item.json.date }}\n\n🕒 Time\n>  {{ $('If').item.json.startTime }} – {{ $('If').item.json.endTime }}\n📍 Venue\n>{{ $('If').item.json.Venue }}\n🎤 Speaker\n> {{ $('If').item.json.Speaker }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n### ❗ Important Notice\n\nDue to unforeseen circumstances, **{{ $('If').item.json[' Event Name'] }}** will no longer take place as scheduled.\n\nWe sincerely apologize for the inconvenience and appreciate your understanding. If the event is rescheduled, an official announcement will be posted in this channel.\n\nPlease stay tuned for future updates from **AWS Learning Club POLAR**. ❄️\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📅 **Cancellation Issued**\n> {{ $now.setZone(\"Asia/Manila\").toFormat(\"cccc, MMMM d, yyyy • h:mm a\") }}\n\n🆔 Tracking ID\n{{ $('If').item.json['Event ID'] }}\n\nThank you for your patience and continued support.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        512
+      ],
+      "id": "c24c71cb-e00b-46b8-aba4-aa8080b798e5",
+      "name": "Cancellation Notif",
+      "webhookId": "68ed8f7b-dfee-48f7-9b0a-5bb4c38a18df",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "YOUR_DISCORD_WEBHOOK_CREDENTIAL_ID",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const event =$json[\"Event Time\"];\n\nif (!event) {\n  throw new Error(\"Event Time is missing.\");\n}\n\nconst parts = event.split(\" | \");\n\nif (parts.length !== 2) {\n  throw new Error(`Invalid Event Time format: ${event}`);\n}\n\nconst date = parts[0];\nconst range = parts[1];\n\nconst [startTime, endTime] = range.split(\" - \");\n\nreturn {\n  json: {\n    ...$json,\n    date,\n    startTime,\n    endTime,\n    startDateTime: `${date} ${startTime}`,\n    endDateTime: `${date} ${endTime}`,\n  },\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        128
+      ],
+      "id": "fecc798e-5ae5-4a5c-a07d-69ccc5a381b1",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=🛠️  **INTERNAL LOG: NEW DRAFT EVENT CREATED**  🛠️\n======================================================\n\n👤  CREATED BY: {{ $json['Created By'] }}\n📝  EVENT TITLE: {{ $json[' Event Name'] }}\n\n------------------------------------------------------\nℹ️  This event is currently in Draft status. No public announcements have been sent out. To push this live to the club channel, change the spreadsheet dropdown status flag to \"Scheduled\".*\n\n🆔  *System ID: {{ $json['Event ID'] }}\n\nTo change status, go to Google Sheet Link \n[INSERT YOUR GOOGLE SHEET SHARE LINK HERE]\n======================================================\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        560,
+        400
+      ],
+      "id": "73c8c1ba-65a7-4c70-8fb1-2639bfd48ebe",
+      "name": "Drafted Event Notifs",
+      "webhookId": "f828c4b7-8002-40cc-9659-89ed3de9f738",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "YOUR_DISCORD_WEBHOOK_CREDENTIAL_ID",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n# 🌟 AWS LEARNING CLUB POLAR\n### 📅 NEW EVENT SCHEDULED\n\n```ansi\n\u001b[1;32m        ● EVENT STATUS: SCHEDULED ●\u001b[0m\n```\n\n# 📢 {{ $('If').item.json[' Event Name'] }}\n\n👋 Hello @everyone!\n\nA brand-new event has just been scheduled! Get ready to learn, collaborate, and build alongside the AWS Learning Club POLAR community.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📅 Date\n> {{ $('If').item.json.date }}\n🕒 Time\n> {{ $('If').item.json.startTime }} - {{ $('If').item.json.endTime }}\n\n📍 Venue\n> {{ $('If').item.json.Venue }}\n\n🎤 Speaker\n> {{ $('If').item.json.Speaker }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n### 📝 Event Overview\n\n> {{ $('If').item.json['Event Description'] }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n### 🔗 Registration\n\n{{ $('If').item.json['Registration Link'] }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🆔 Tracking ID\n{{ $('If').item.json['Event ID'] }}\n\n❄️ *Powered by the POLAR Automation Engine*",
+        "options": {
+          "username": "@everyone"
+        },
+        "embeds": {
+          "values": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        16
+      ],
+      "id": "b0831c3a-bf1e-4ae2-8f24-485aac9b5cd9",
+      "name": "Scheduled Events Notifs",
+      "webhookId": "69d69f56-a394-4348-8011-10faf5a8ad37",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "YOUR_DISCORD_WEBHOOK_CREDENTIAL_ID",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Gmail }}",
+        "subject": "Event Polar Schedule",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Event Scheduled</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#f4f5f7; font-family:Georgia, 'Times New Roman', Times, serif;\">\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#f4f5f7; padding:30px 0;\">\n  <tr>\n    <td align=\"center\">\n      <table role=\"presentation\" width=\"520\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e5e5e5;\">\n        <!-- Header -->\n        <tr>\n          <td style=\"background:linear-gradient(135deg,#7b2ff7 0%,#a855f7 50%,#c084fc 100%); padding:28px 32px; text-align:center;\">\n            <p style=\"margin:0 0 8px 0; font-size:11px; font-weight:600; letter-spacing:3px; color:#eddcff; text-transform:uppercase;\">\n              Event Update\n            </p>\n            <h1 style=\"margin:0; color:#ffffff; font-size:24px; font-weight:400; letter-spacing:0.5px;\">\n              Event Scheduled\n            </h1>\n          </td>\n        </tr>\n        <!-- Body -->\n        <tr>\n          <td style=\"padding:36px 32px; color:#333333; font-size:14.5px; line-height:1.75;\">\n            <p style=\"margin-top:0;\">Dear <strong>{{ $json.Name }}</strong>,</p>\n            <p>\n            We're pleased to inform you that the following event has been <strong style=\"color:#7b2ff7;\">scheduled</strong>:\n            </p>\n            <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#f7f1ff; border-left:4px solid #7b2ff7; border-radius:4px; margin:20px 0;\">\n              <tr>\n                <td style=\"padding:16px 18px;\">\n                  <p style=\"margin:0; color:#8a8a8a; font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:600;\">Event</p>\n                  <p style=\"margin:5px 0 0 0; color:#202124; font-size:17px; font-weight:600; letter-spacing:0.2px;\">{{ $json['Event Name'] }}</p>\n                </td>\n              </tr>\n              <tr>\n                <td style=\"padding:0 18px 16px 18px;\">\n                  <p style=\"margin:0; color:#8a8a8a; font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:600;\">Date &amp; Time</p>\n                  <p style=\"margin:5px 0 0 0; color:#202124; font-size:15px; font-weight:500;\">{{ $('If1').item.json['Event Time'] }}</p>\n                </td>\n              </tr>\n              <tr>\n                <td style=\"padding:0 18px 16px 18px;\">\n                  <p style=\"margin:0; color:#8a8a8a; font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:600;\">Location</p>\n                  <p style=\"margin:5px 0 0 0; color:#202124; font-size:15px; font-weight:500;\">{{ $('If1').item.json.Venue }}</p>\n                </td>\n              </tr>\n            </table>\n            <p>\n            Please mark your calendar accordingly. If any changes occur, you will be notified as soon as an official update is available.\n            </p>\n            <p>\n            If you have any questions or need to confirm your attendance, please don't hesitate to reach out to us.\n            </p>\n            <div style=\"height:1px; background-color:#ececec; margin:26px 0;\"></div>\n            <p style=\"margin:0 0 4px 0;\">\n            We look forward to seeing you there,\n            </p>\n            <p style=\"margin:0; font-weight:700; color:#202124;\">\n            The Events Team\n            </p>\n          </td>\n        </tr>\n        <!-- Footer -->\n        <tr>\n          <td style=\"background-color:#f5f0fb; padding:20px 32px; text-align:center; border-top:1px solid #e5e5e5;\">\n            <p style=\"margin:0; color:#9a9a9a; font-size:11px; line-height:1.6; letter-spacing:0.2px;\">\n            This is an automated notification. Please do not reply directly to this email unless reporting an issue.\n            </p>\n          </td>\n        </tr>\n      </table>\n    </td>\n  </tr>\n</table>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        256
+      ],
+      "id": "6b1644a2-1354-4fa5-92f7-7a9a1d3c4d07",
+      "name": "Send a message",
+      "webhookId": "63d1f022-1c17-4ab8-bf46-3cd0f5ea7460",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Polar Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Participants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Event Name",
+              "lookupValue": "={{ $json[' Event Name'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        864,
+        736
+      ],
+      "id": "acf3f9d4-ba6a-4de5-a3db-c140a1fc3d7c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Gmail }}",
+        "subject": "Hello",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Event Cancelled</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#f4f5f7; font-family:Arial, Helvetica, sans-serif;\">\n\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#f4f5f7; padding:30px 0;\">\n  <tr>\n    <td align=\"center\">\n      <table role=\"presentation\" width=\"520\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e5e5e5;\">\n\n        <!-- Header -->\n        <tr>\n          <td style=\"background-color:#c0392b; padding:28px 32px; text-align:center;\">\n            <p style=\"margin:0 0 6px 0; font-size:12px; font-weight:700; letter-spacing:2px; color:#f8d7d3; text-transform:uppercase;\">\n              Event Update\n            </p>\n            <h1 style=\"margin:0; color:#ffffff; font-size:21px; font-weight:700;\">\n              Event Cancelled\n            </h1>\n          </td>\n        </tr>\n\n        <!-- Body -->\n        <tr>\n          <td style=\"padding:32px; color:#2f2f2f; font-size:14px; line-height:1.7;\">\n\n            <p style=\"margin-top:0;\">Dear <strong>{{ $json.Name }}</strong>,</p>\n\n            <p>\n            We regret to inform you that the following event has been <strong style=\"color:#c0392b;\">cancelled</strong>:\n            </p>\n\n            <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#faf4f3; border-left:4px solid #c0392b; border-radius:4px; margin:20px 0;\">\n              <tr>\n                <td style=\"padding:16px 18px;\">\n                  <p style=\"margin:0; color:#8a8a8a; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;\">Event</p>\n                  <p style=\"margin:4px 0 0 0; color:#202124; font-size:16px; font-weight:700;\">{{ $json['Event Name'] }}</p>\n                </td>\n              </tr>\n            </table>\n\n            <p>\n            We understand this may be an inconvenience, and we sincerely apologize for any disruption this may cause to your schedule. If this event is rescheduled, you will be notified as soon as an official update is available.\n            </p>\n\n            <p>\n            If you have any questions or believe this cancellation was made in error, please don't hesitate to reach out to us.\n            </p>\n\n            <div style=\"height:1px; background-color:#ececec; margin:26px 0;\"></div>\n\n            <p style=\"margin:0 0 4px 0;\">\n            Thank you for your understanding,\n            </p>\n            <p style=\"margin:0; font-weight:700; color:#202124;\">\n            The Events Team\n            </p>\n\n          </td>\n        </tr>\n\n        <!-- Footer -->\n        <tr>\n          <td style=\"background-color:#f1f1f1; padding:18px 32px; text-align:center; border-top:1px solid #e5e5e5;\">\n            <p style=\"margin:0; color:#9a9a9a; font-size:11px; line-height:1.6;\">\n            This is an automated notification. Please do not reply directly to this email unless reporting an issue.\n            </p>\n          </td>\n        </tr>\n\n      </table>\n    </td>\n  </tr>\n</table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        768
+      ],
+      "id": "ef7a6eb9-6f6b-433d-a9dc-404fc9d51bed",
+      "name": "Send a message1",
+      "webhookId": "4ce0bb12-c567-42aa-8e5a-056910bb96f4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ac84ebf8-777d-41e4-a361-762e29b9a69a",
+              "leftValue": "={{ $('If').item.json.Status }}",
+              "rightValue": "Scheduled",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        192
+      ],
+      "id": "c1bdc20c-f4de-409b-ac63-402667c49f62",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ac84ebf8-777d-41e4-a361-762e29b9a69a",
+              "leftValue": "={{ $('If').item.json.Status }}",
+              "rightValue": "Cancelled",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        624
+      ],
+      "id": "585a4cb5-f947-496d-aeee-4231ebfd721f",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Polar Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Participants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Event Name",
+              "lookupValue": "={{ $json[' Event Name'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        272
+      ],
+      "id": "92f6028d-5c3b-490e-890b-04ec8e8b48ac",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Drafted Event Notifs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Scheduled Events Notifs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Cancellation Notif",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1e806e59-fbba-4738-9a73-2712eb982756",
+  "meta": {
+    "instanceId": "YOUR_N8N_INSTANCE_ID"
+  },
+  "nodeGroups": [],
+  "id": "bTkZDFZrtyqbVSt5",
+  "tags": []
+}
